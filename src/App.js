@@ -1,12 +1,14 @@
+// imports
 import React, { Component } from "react"
 import * as math from "mathjs"
-
+// styles
 import "./index.css"
-
+// components
 import Button from "./components/button"
 import Input from "./components/input"
 import ClearBtn from "./components/clear"
 
+// main class default export
 class App extends Component {
 	constructor(props) {
 		super(props)
@@ -14,16 +16,18 @@ class App extends Component {
 		this.state = {
 			calc: "",
 			ops: [
+				//defined the number pad as state
 				["7", "8", "9", "/"],
 				["4", "5", "6", "*"],
 				["1", "2", "3", "+"],
 				[" ", "0", ".", "-"],
 			],
-			quote: "",
-			author: "",
+			quote: "", // state for quote
+			author: "", // state for author
 		}
 	}
 	componentDidMount() {
+		// get quote on load
 		fetch("https://favqs.com/api/qotd")
 			.then((res) => res.json())
 			.then((data) => {
@@ -33,6 +37,7 @@ class App extends Component {
 				})
 			})
 	}
+	// function to get a new quote on demand
 	getQuote = async () => {
 		await fetch("https://favqs.com/api/qotd")
 			.then((res) => res.json())
@@ -43,19 +48,19 @@ class App extends Component {
 				})
 			})
 	}
-
+	// add value to calc state
 	addToCalc = (val) => {
 		this.setState({
 			calc: this.state.calc + val,
 		})
 	}
-
+	// evaluate expression
 	handleEqual = () => {
 		this.setState({
 			calc: math.evaluate(this.state.calc),
 		})
 	}
-
+	// render buttons on screen
 	renderButtons = () => {
 		return this.state.ops.map((row) => {
 			return (
@@ -73,15 +78,17 @@ class App extends Component {
 			<div className='app'>
 				<div className='calculator'>
 					<Input problem={this.state.calc} />
-					{this.renderButtons()}
+					{this.renderButtons()} {/* buttons rendered here */}
 					<div className='row'>
 						<ClearBtn handleClick={() => this.setState({ calc: "" })}>
 							AC
 						</ClearBtn>
 						<Button handleClick={() => this.handleEqual()}>=</Button>
-					</div>
+					</div>{" "}
+					{/* clear and = button rendered here */}
 				</div>
 				<div className='quote'>
+					{/* quote rendered here */}
 					<h1>“{this.state.quote}”</h1>
 					<h2>- {this.state.author}</h2>
 					<button
